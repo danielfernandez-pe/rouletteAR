@@ -13,6 +13,7 @@ import ARKit
 class ViewController: UIViewController {
 
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet weak var numberTextField: UITextField!
     
     // Nodes
     var rouletteNode: SCNNode!
@@ -42,8 +43,6 @@ class ViewController: UIViewController {
     var rouletteTimer: Timer!
     var ballTimer: Timer!
     
-//    var
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSceneView()
@@ -66,9 +65,14 @@ class ViewController: UIViewController {
 
     @IBAction func spinPressed(_ sender: Any) {
         guard rouletteNode != nil,
-            !isRotating else { return }
+            !isRotating,
+            let numberToStopText = numberTextField.text,
+            !numberToStopText.isEmpty,
+            let numberToStop = Int(numberToStopText),
+            numberToStop >= 0 && numberToStop <= 36 else { return }
         dropBall()
         startRotation()
+        view.endEditing(true)
     }
     
     @objc
@@ -127,6 +131,10 @@ class ViewController: UIViewController {
         ballCurrentSecondsSpinning = 0.0
         rouletteSecondsPerSpin = 0.5
         ballSecondsPerSpin = 0.5
+        
+        rouletteCurrentAngleY = 0.0
+        ballCurrentAngleY = 0.0
+        
         ballTimer.invalidate()
         rouletteTimer.invalidate()
     }
@@ -149,22 +157,14 @@ extension ViewController {
         rouletteTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(rotateRoulette), userInfo: nil, repeats: false)
     }
     
-    private func slotIsInFinalPosition() -> Bool {
-        // the current rouletteCurrentAngleY.radiansToDegrees is in the degrees position of the selected number from the array? Plus/minus 4 (range error)
-        // the ball should be in the same position, but we can check something else for the ball here. Let's try finds
-        return true
-    }
-    
     @objc
     func rotateRoulette() {
-        if rouletteCurrentSecondsSpinning >= totalSecondsToSpin && slotIsInFinalPosition() {
-            resetValues()
-            return
-        }
-        
-        print(rouletteCurrentAngleY.radiansToDegrees)
         if rouletteCurrentAngleY.radiansToDegrees >= 360 {
             rouletteCurrentAngleY = 0.0
+        }
+        
+        if rouletteCurrentSecondsSpinning >= totalSecondsToSpin {
+            return
         }
         
         rouletteCurrentSecondsSpinning += rouletteSecondsPerSlot
@@ -196,19 +196,30 @@ extension ViewController {
         ballTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(startRotationForBall), userInfo: nil, repeats: false)
     }
     
+    private func slotIsInFinalPosition() -> Bool {
+        guard let numberToStopText = numberTextField.text,
+            let numberToStop = Int(numberToStopText),
+            let selectedNumberDegrees = numbersDic[numberToStop] else { return false }
+        
+        let twoDecimalAngle = (abs(ballCurrentAngleY.radiansToDegrees) * 100).rounded() / 100
+        return twoDecimalAngle == selectedNumberDegrees
+    }
+    
     @objc
     func startRotationForBall() {
+        if ballCurrentAngleY.radiansToDegrees <= -360 {
+            ballCurrentAngleY = 0.0
+//            ballNodeParent.eulerAngles.y = 0.0
+        }
+        
         if ballCurrentSecondsSpinning >= totalSecondsToSpin && slotIsInFinalPosition() {
             resetValues()
             return
         }
-        
-        print(ballCurrentAngleY.radiansToDegrees)
-        if ballCurrentAngleY.radiansToDegrees >= 360 {
-            ballCurrentAngleY = 0.0
-        }
-        
+
         ballCurrentSecondsSpinning += ballSecondsPerSlot
+        
+//        print(ballCurrentAngleY.radiansToDegrees)
         
         let anglePerSlot: Float = Float(360 / totalSlotsInRoulette)
         ballCurrentAngleY -= anglePerSlot.degreesToRadians

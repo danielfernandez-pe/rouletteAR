@@ -15,14 +15,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </arscnView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HAz-fR-UlD">
-                                <rect key="frame" x="24" y="794" width="366" height="44"/>
+                                <rect key="frame" x="24" y="136" width="366" height="44"/>
                                 <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="c5Q-8r-bl3"/>
+                                    <constraint firstAttribute="height" constant="44" id="qvC-KE-5IK"/>
                                 </constraints>
                                 <state key="normal" title="Spin">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -31,20 +32,28 @@
                                     <action selector="spinPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="EK5-zf-UCj"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="32" borderStyle="roundedRect" placeholder="Put the number where the ball should stop" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nbM-0a-Byu">
+                                <rect key="frame" x="24" y="76" width="366" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="pTb-5g-ny2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="GsS-dJ-CKf"/>
-                            <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="U0K-SW-4ec" secondAttribute="bottom" id="VpT-BR-CcM"/>
-                            <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
-                            <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="HAz-fR-UlD" secondAttribute="trailing" constant="24" id="b1N-ZT-xz8"/>
-                            <constraint firstItem="HAz-fR-UlD" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" constant="24" id="j15-R7-10f"/>
-                            <constraint firstItem="fQZ-KI-GVf" firstAttribute="bottom" secondItem="HAz-fR-UlD" secondAttribute="bottom" constant="24" id="n6n-fH-kWB"/>
-                            <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
+                            <constraint firstItem="HAz-fR-UlD" firstAttribute="top" secondItem="nbM-0a-Byu" secondAttribute="bottom" constant="16" id="Jzc-Jq-Xb0"/>
+                            <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="HAz-fR-UlD" secondAttribute="trailing" constant="24" id="NeP-Ro-UO9"/>
+                            <constraint firstItem="nbM-0a-Byu" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" constant="24" id="dkt-fZ-W4E"/>
+                            <constraint firstItem="HAz-fR-UlD" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" constant="24" id="gTf-x3-ab5"/>
+                            <constraint firstItem="nbM-0a-Byu" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="32" id="hAw-Ta-4c7"/>
+                            <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="nbM-0a-Byu" secondAttribute="trailing" constant="24" id="oRJ-EU-J5T"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
+                        <outlet property="numberTextField" destination="nbM-0a-Byu" id="Maz-cS-MoS"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
                     </connections>
                 </viewController>
